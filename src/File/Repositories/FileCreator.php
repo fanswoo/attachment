@@ -2,8 +2,8 @@
 
 namespace FF\Attachment\File\Repositories;
 
-use FF\Attachment\Contracts\Repositories\Attachment;
-use FF\Attachment\Contracts\Repositories\AttachmentCreator;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\Repositories\AttachmentCreator;
 
 class FileCreator implements AttachmentCreator
 {

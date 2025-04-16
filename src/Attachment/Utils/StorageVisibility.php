@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\Attachment\Utils;
+namespace FF\Attachment\Attachment\Utils;
 
 use Illuminate\Support\Facades\Storage;
 

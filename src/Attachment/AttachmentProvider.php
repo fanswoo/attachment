@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\Attachment;
+namespace FF\Attachment\Attachment;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -58,182 +58,177 @@ class AttachmentProvider extends ServiceProvider
     private function registerFile()
     {
         $this->app->bind(
-            \File\Contracts\StorageUploader::class,
-            \File\StorageUploader::class,
+            \FF\Attachment\File\Contracts\StorageUploader::class,
+            \FF\Attachment\File\StorageUploader::class,
         );
 
         $this->app
-            ->when(\File\FileModifyer::class)
-            ->needs(Contracts\PathGetter::class)
-            ->give(\File\PathGetter::class);
+            ->when(\FF\Attachment\File\FileModifyer::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\PathGetter::class)
+            ->give(\FF\Attachment\File\PathGetter::class);
 
         $this->app
-            ->when(\File\StorageUploader::class)
+            ->when(\FF\Attachment\File\StorageUploader::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\File\AttachmentProcessor::class);
+            ->give(\FF\Attachment\File\AttachmentProcessor::class);
 
         $this->app
-            ->when(\File\Uploader::class)
+            ->when(\FF\Attachment\File\Uploader::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\File\AttachmentProcessor::class);
+            ->give(\FF\Attachment\File\AttachmentProcessor::class);
 
         $this->app
-            ->when(\File\AttachmentProcessor::class)
-            ->needs(Contracts\FileModifyer::class)
-            ->give(\File\FileModifyer::class);
+            ->when(\FF\Attachment\File\AttachmentProcessor::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\FileModifyer::class)
+            ->give(\FF\Attachment\File\FileModifyer::class);
 
         $this->app
-            ->when(\File\AttachmentProcessor::class)
-            ->needs(Contracts\Validator::class)
-            ->give(\File\Validator::class);
+            ->when(\FF\Attachment\File\AttachmentProcessor::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\Validator::class)
+            ->give(\FF\Attachment\File\Validator::class);
 
         $this->app
-            ->when(\File\AttachmentProcessor::class)
+            ->when(\FF\Attachment\File\AttachmentProcessor::class)
             ->needs(
-                Contracts\Repositories\AttachmentCreator::class,
+                \FF\Attachment\Attachment\Contracts\Repositories\AttachmentCreator::class,
             )
-            ->give(\File\Repositories\FileCreator::class);
+            ->give(\FF\Attachment\File\Repositories\FileCreator::class);
 
         $this->app->bind(
-            \File\Contracts\Controllers\FileController::class,
-            \File\Controllers\FileController::class,
+            \FF\Attachment\File\Contracts\Controllers\FileController::class,
+            \FF\Attachment\File\Controllers\FileController::class,
         );
 
         $this->app
-            ->when(\File\Controllers\FileController::class)
-            ->needs(\File\Contracts\MutipleUploader::class)
-            ->give(\File\MutipleUploader::class);
+            ->when(\FF\Attachment\File\Controllers\FileController::class)
+            ->needs(\FF\Attachment\File\Contracts\MutipleUploader::class)
+            ->give(\FF\Attachment\File\MutipleUploader::class);
 
         $this->app->bind(
-            \File\Contracts\MutipleUploader::class,
-            \File\MutipleUploader::class,
+            \FF\Attachment\File\Contracts\MutipleUploader::class,
+            \FF\Attachment\File\MutipleUploader::class,
         );
 
         $this->app
-            ->when(\File\Validator::class)
+            ->when(\FF\Attachment\File\Validator::class)
             ->needs('$fileClassName')
-            ->give(\File\Repositories\File::class);
+            ->give(\FF\Attachment\File\Repositories\File::class);
 
         $this->app->bind(
-            \File\Contracts\Repositories\File::class,
-            \File\Repositories\File::class,
+            \FF\Attachment\File\Contracts\Repositories\File::class,
+            \FF\Attachment\File\Repositories\File::class,
         );
 
         $this->app
-            ->when(\File\Repositories\FileCreator::class)
+            ->when(\FF\Attachment\File\Repositories\FileCreator::class)
             ->needs('$fileClassName')
-            ->give(\File\Repositories\File::class);
+            ->give(\FF\Attachment\File\Repositories\File::class);
     }
 
     private function registerPic()
     {
         $this->app->bind(
-            \Pic\Contracts\UrlUploader::class,
-            \Pic\UrlUploader::class,
+            \FF\Attachment\Pic\Contracts\UrlUploader::class,
+            \FF\Attachment\Pic\UrlUploader::class,
         );
 
         $this->app->bind(
-            \Pic\Contracts\StorageUploader::class,
-            \Pic\StorageUploader::class,
+            \FF\Attachment\Pic\Contracts\StorageUploader::class,
+            \FF\Attachment\Pic\StorageUploader::class,
         );
 
         $this->app
-            ->when(\Pic\FileModifyer::class)
-            ->needs(Contracts\PathGetter::class)
-            ->give(\Pic\PathGetter::class);
+            ->when(\FF\Attachment\Pic\FileModifyer::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\PathGetter::class)
+            ->give(\FF\Attachment\Pic\PathGetter::class);
 
         $this->app
-            ->when(\Pic\StorageUploader::class)
+            ->when(\FF\Attachment\Pic\StorageUploader::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\Pic\AttachmentProcessor::class);
+            ->give(\FF\Attachment\Pic\AttachmentProcessor::class);
 
         $this->app
-            ->when(\Pic\UrlUploader::class)
+            ->when(\FF\Attachment\Pic\UrlUploader::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\Pic\AttachmentProcessor::class);
+            ->give(\FF\Attachment\Pic\AttachmentProcessor::class);
 
         $this->app
-            ->when(\Pic\Uploader::class)
+            ->when(\FF\Attachment\Pic\Uploader::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\Pic\AttachmentProcessor::class);
+            ->give(\FF\Attachment\Pic\AttachmentProcessor::class);
 
         $this->app
-            ->when(\Pic\AttachmentProcessor::class)
+            ->when(\FF\Attachment\Pic\AttachmentProcessor::class)
             ->needs(
-                Contracts\AttachmentProcessor::class,
+                \FF\Attachment\Attachment\Contracts\AttachmentProcessor::class,
             )
-            ->give(\Pic\AttachmentProcessor::class);
+            ->give(\FF\Attachment\Pic\AttachmentProcessor::class);
 
         $this->app
-            ->when(\Pic\AttachmentProcessor::class)
-            ->needs(Contracts\FileModifyer::class)
-            ->give(\Pic\FileModifyer::class);
+            ->when(\FF\Attachment\Pic\AttachmentProcessor::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\FileModifyer::class)
+            ->give(\FF\Attachment\Pic\FileModifyer::class);
 
         $this->app
-            ->when(\Pic\AttachmentProcessor::class)
-            ->needs(Contracts\Validator::class)
-            ->give(\Pic\Validator::class);
+            ->when(\FF\Attachment\Pic\AttachmentProcessor::class)
+            ->needs(\FF\Attachment\Attachment\Contracts\Validator::class)
+            ->give(\FF\Attachment\Pic\Validator::class);
 
         $this->app
-            ->when(\Pic\AttachmentProcessor::class)
+            ->when(\FF\Attachment\Pic\AttachmentProcessor::class)
             ->needs(
-                Contracts\Repositories\AttachmentCreator::class,
+                \FF\Attachment\Attachment\Contracts\Repositories\AttachmentCreator::class,
             )
-            ->give(\Pic\Repositories\PicCreator::class);
+            ->give(\FF\Attachment\Pic\Repositories\PicCreator::class);
 
         $this->app->bind(
-            \Pic\Contracts\Controllers\PicController::class,
-            \Pic\Controllers\PicController::class,
+            \FF\Attachment\Pic\Contracts\Controllers\PicController::class,
+            \FF\Attachment\Pic\Controllers\PicController::class,
         );
 
         $this->app->bind(
-            \Pic\Contracts\Controllers\PicController::class,
-            \Pic\Controllers\PicController::class,
-        );
-
-        $this->app
-            ->when(\Pic\Controllers\PicController::class)
-            ->needs(\Pic\Contracts\MutipleUploader::class)
-            ->give(\Pic\MutipleUploader::class);
-
-        $this->app->bind(
-            \Pic\Contracts\Controllers\PicCKEditorController::class,
-            \Pic\Controllers\PicCKEditorController::class,
-        );
-
-        $this->app->bind(
-            Contracts\Uploader::class,
-            \Pic\Uploader::class
-        );
-
-        $this->app->bind(
-            \Pic\Contracts\MutipleUploader::class,
-            \Pic\MutipleUploader::class,
-        );
-
-        $this->app->bind(
-            \Pic\Contracts\Validator::class,
-            \Pic\Validator::class,
+            \FF\Attachment\Pic\Contracts\Controllers\PicController::class,
+            \FF\Attachment\Pic\Controllers\PicController::class,
         );
 
         $this->app
-            ->when(\Pic\Validator::class)
+            ->when(\FF\Attachment\Pic\Controllers\PicController::class)
+            ->needs(\FF\Attachment\Pic\Contracts\MutipleUploader::class)
+            ->give(\FF\Attachment\Pic\MutipleUploader::class);
+
+        $this->app->bind(
+            \FF\Attachment\Attachment\Contracts\Uploader::class,
+            \FF\Attachment\Pic\Uploader::class
+        );
+
+        $this->app->bind(
+            \FF\Attachment\Pic\Contracts\MutipleUploader::class,
+            \FF\Attachment\Pic\MutipleUploader::class,
+        );
+
+        $this->app->bind(
+            \FF\Attachment\Pic\Contracts\Validator::class,
+            \FF\Attachment\Pic\Validator::class,
+        );
+
+        $this->app
+            ->when(\FF\Attachment\Pic\Validator::class)
             ->needs('$picClassName')
-            ->give(\Pic\Repositories\Pic::class);
+            ->give(\FF\Attachment\Pic\Repositories\Pic::class);
 
         $this->app
-            ->when(\Pic\Repositories\PicCreator::class)
+            ->when(\FF\Attachment\Pic\Repositories\PicCreator::class)
             ->needs('$picClassName')
-            ->give(\Pic\Repositories\Pic::class);
+            ->give(\FF\Attachment\Pic\Repositories\Pic::class);
     }
 }

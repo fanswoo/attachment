@@ -3,7 +3,7 @@
 namespace FF\Attachment\File\Repositories;
 
 use App\Common\ClassTag\ClassTag;
-use FF\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 use FF\Attachment\File\Contracts\Repositories\File as IFile;
 use FF\Attachment\File\PathGetter;
 use Illuminate\Database\Eloquent\Model;
@@ -11,9 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class File extends Model implements IFile, Attachment
 {
-    protected $appends = ['downloadUrl'];
+
+    const UPDATED_AT = 'updatedAt';
+
+    const CREATED_AT = 'createdAt';
+
+    const DELETED_AT = 'deletedAt';
 
     public $table = 'File';
+
+    protected $appends = ['downloadUrl'];
 
     protected $fillable = [
         'id',

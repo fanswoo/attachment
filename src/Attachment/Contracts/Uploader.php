@@ -1,8 +1,8 @@
 <?php
 
-namespace FF\Attachment\Contracts;
+namespace FF\Attachment\Attachment\Contracts;
 
-use FF\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 
 interface Uploader
 {

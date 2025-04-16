@@ -3,8 +3,8 @@
 namespace FF\Attachment\Pic;
 
 use Exception;
-use FF\Attachment\AbstractUploader;
-use FF\Attachment\Contracts\Uploader as IUploader;
+use FF\Attachment\Attachment\AbstractUploader;
+use FF\Attachment\Attachment\Contracts\Uploader as IUploader;
 use FF\Attachment\Pic\Contracts\UrlUploader as IUrlUploader;
 use Illuminate\Support\Facades\Storage;
 

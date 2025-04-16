@@ -2,7 +2,7 @@
 
 namespace FF\Attachment\Pic\Repositories;
 
-use FF\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use FF\Attachment\Pic\Contracts\Repositories\Pic as IPic;
@@ -10,6 +10,12 @@ use FF\Attachment\Pic\PathGetter;
 
 class Pic extends Model implements IPic, Attachment
 {
+    const UPDATED_AT = 'updatedAt';
+
+    const CREATED_AT = 'createdAt';
+
+    const DELETED_AT = 'deletedAt';
+
     protected $appends = ['url', 'downloadUrl'];
 
     public $table = 'Pic';

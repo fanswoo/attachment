@@ -2,8 +2,8 @@
 
 namespace FF\Attachment\File;
 
-use FF\Attachment\AbstractUploader;
-use FF\Attachment\Contracts\Uploader as IUploader;
+use FF\Attachment\Attachment\AbstractUploader;
+use FF\Attachment\Attachment\Contracts\Uploader as IUploader;
 use Illuminate\Http\UploadedFile;
 
 class Uploader extends AbstractUploader implements IUploader

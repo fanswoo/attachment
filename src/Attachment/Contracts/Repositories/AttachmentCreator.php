@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\Attachment\Contracts\Repositories;
+namespace FF\Attachment\Attachment\Contracts\Repositories;
 
 interface AttachmentCreator
 {

@@ -2,7 +2,7 @@
 
 namespace FF\Attachment\File;
 
-use FF\Attachment\Contracts\Validator as IValidator;
+use FF\Attachment\Attachment\Contracts\Validator as IValidator;
 
 class Validator implements IValidator
 {

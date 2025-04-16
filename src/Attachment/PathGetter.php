@@ -1,8 +1,8 @@
 <?php
 
-namespace FF\Attachment;
+namespace FF\Attachment\Attachment;
 
-use FF\Attachment\Contracts\PathGetter as IPathGetter;
+use FF\Attachment\Attachment\Contracts\PathGetter as IPathGetter;
 
 abstract class PathGetter implements IPathGetter
 {

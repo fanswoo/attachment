@@ -2,10 +2,10 @@
 
 namespace FF\Attachment\File;
 
-use FF\Attachment\Contracts\FileModifyer as IFileModifyer;
-use FF\Attachment\Contracts\PathGetter;
-use FF\Attachment\Contracts\Repositories\Attachment;
-use FF\Attachment\Utils\StorageVisibility;
+use FF\Attachment\Attachment\Contracts\FileModifyer as IFileModifyer;
+use FF\Attachment\Attachment\Contracts\PathGetter;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Utils\StorageVisibility;
 use Illuminate\Support\Facades\Storage;
 
 class FileModifyer implements IFileModifyer

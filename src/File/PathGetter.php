@@ -2,8 +2,8 @@
 
 namespace FF\Attachment\File;
 
-use FF\Attachment\Contracts\PathGetter as IPathGetter;
-use FF\Attachment\PathGetter as AttachmentPathGetter;
+use FF\Attachment\Attachment\Contracts\PathGetter as IPathGetter;
+use FF\Attachment\Attachment\PathGetter as AttachmentPathGetter;
 
 class PathGetter extends AttachmentPathGetter implements IPathGetter
 {

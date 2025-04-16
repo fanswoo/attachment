@@ -1,9 +1,9 @@
 <?php
 
-namespace FF\Attachment;
+namespace FF\Attachment\Attachment;
 
-use FF\Attachment\Contracts\AttachmentProcessor;
-use FF\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\AttachmentProcessor;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 
 abstract class AbstractUploader
 {

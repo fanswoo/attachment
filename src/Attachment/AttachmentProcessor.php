@@ -1,12 +1,12 @@
 <?php
 
-namespace FF\Attachment;
+namespace FF\Attachment\Attachment;
 
-use FF\Attachment\Contracts\AttachmentProcessor as IAttachmentProcessor;
-use FF\Attachment\Contracts\FileModifyer;
-use FF\Attachment\Contracts\Repositories\Attachment;
-use FF\Attachment\Contracts\Repositories\AttachmentCreator;
-use FF\Attachment\Contracts\Validator;
+use FF\Attachment\Attachment\Contracts\AttachmentProcessor as IAttachmentProcessor;
+use FF\Attachment\Attachment\Contracts\FileModifyer;
+use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
+use FF\Attachment\Attachment\Contracts\Repositories\AttachmentCreator;
+use FF\Attachment\Attachment\Contracts\Validator;
 
 abstract class AttachmentProcessor implements IAttachmentProcessor
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\Attachment\Contracts;
+namespace FF\Attachment\Attachment\Contracts;
 
 interface MutipleUploader
 {
