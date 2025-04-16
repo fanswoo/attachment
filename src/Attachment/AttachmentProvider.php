@@ -4,10 +4,35 @@ namespace FF\Attachment\Attachment;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AttachmentProvider extends ServiceProvider
 {
     public function boot()
+    {
+//        $this->publishesMigrations([
+//            __DIR__.'/../../database/migrations' => database_path('migrations'),
+//        ], 'migrations');
+        $this->registerMigrations(__DIR__.'/../../database/migrations');
+        $this->registerRoutes();
+    }
+
+    protected function registerMigrations(string $directory): void
+    {
+        if ($this->app->runningInConsole()) {
+            $generator = function(string $directory) {
+                foreach ($this->app->make('files')->allFiles($directory) as $file) {
+                    yield $file->getPathname() => $this->app->databasePath(
+                        'migrations/' . now()->format('Y_m_d_His') . Str::after($file->getFilename(), '00_00_00_000000')
+                    );
+                }
+            };
+
+            $this->publishes(iterator_to_array($generator($directory)), 'migrations');
+        }
+    }
+
+    protected function registerRoutes(): void
     {
         Route::post(
             'pic/upload',

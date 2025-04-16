@@ -6,8 +6,8 @@ class FileAdder
 {
     static function add(string $className, string $attrValue, array $ids, string $morphClass, int $primaryId)
     {
-        $priorityMaxFile = $className::where('fileableType', $morphClass)
-            ->where('fileableAttr', $attrValue)
+        $priorityMaxFile = $className::where('fileable_type', $morphClass)
+            ->where('fileable_attr', $attrValue)
             ->orderBy('priority', 'DESC')
             ->first();
         $priorityMax = $priorityMaxFile->priority;
@@ -16,9 +16,9 @@ class FileAdder
 
         foreach( $Files as $key => $File )
         {
-            $File->fileableId = $primaryId;
-            $File->fileableType = $morphClass;
-            $File->fileableAttr = $attrValue;
+            $File->fileable_id = $primaryId;
+            $File->fileable_type = $morphClass;
+            $File->fileable_attr = $attrValue;
             $File->priority = $priorityMax + count($Files) - $key;
             $File->save();
         }

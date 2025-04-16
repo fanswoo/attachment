@@ -10,9 +10,9 @@ class PicDeleter
 
         foreach( $Pics as $Pic )
         {
-            $Pic->picableId = 0;
-            $Pic->picableType = '';
-            $Pic->picableAttr = '';
+            $Pic->picable_id = 0;
+            $Pic->picable_type = '';
+            $Pic->picable_attr = '';
             $Pic->priority = 0;
             $Pic->save();
         }

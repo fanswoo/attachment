@@ -11,32 +11,25 @@ use Illuminate\Support\Facades\Storage;
 
 class File extends Model implements IFile, Attachment
 {
-
-    const UPDATED_AT = 'updatedAt';
-
-    const CREATED_AT = 'createdAt';
-
-    const DELETED_AT = 'deletedAt';
-
-    public $table = 'File';
+    public $table = 'files';
 
     protected $appends = ['downloadUrl'];
 
     protected $fillable = [
         'id',
-        'userId',
+        'user_id',
         'title',
-        'fileName',
-        'fileSize',
-        'fileType',
+        'file_name',
+        'file_size',
+        'file_type',
         'priority',
         'md5',
-        'fileableId',
-        'fileableType',
-        'fileableAttr',
-        'updatedAt',
-        'createdAt',
-        'deletedAt',
+        'fileable_id',
+        'fileable_type',
+        'fileable_attr',
+        'updated_at',
+        'created_at',
+        'deleted_at',
     ];
 
     public static function getMaxSize(): int
@@ -119,7 +112,7 @@ class File extends Model implements IFile, Attachment
         $pathGetter = app(PathGetter::class);
         $pathGetter->setParameter(
             id: $this->id,
-            fileName: $this->fileName,
+            fileName: $this->file_name,
             md5: $this->md5,
         );
 
@@ -131,23 +124,12 @@ class File extends Model implements IFile, Attachment
         $pathGetter = app(PathGetter::class);
         $pathGetter->setParameter(
             id: $this->id,
-            fileName: $this->fileName,
+            fileName: $this->file_name,
             md5: $this->md5,
         );
 
         return Storage::disk(
             $uploadDisk ?? config('filesystems.upload_disk'),
         )->download($pathGetter->getFullPath(), $pathGetter->getFileName());
-    }
-
-    // 分類類別之多類別多屬性多對多
-    public function classTags($action = null, $ids = [])
-    {
-        return $this->relationClassTag(
-            ClassTag::class,
-            __FUNCTION__,
-            $action,
-            $ids,
-        );
     }
 }

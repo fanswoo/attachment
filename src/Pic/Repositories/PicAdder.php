@@ -10,8 +10,8 @@ class PicAdder
             return;
         }
 
-        $priorityMaxPic = $className::where('picableType', $morphClass)
-            ->where('picableAttr', $attrValue)
+        $priorityMaxPic = $className::where('picable_type', $morphClass)
+            ->where('picable_attr', $attrValue)
             ->orderBy('priority', 'DESC')
             ->first();
         $priorityMax = $priorityMaxPic->priority;
@@ -20,9 +20,9 @@ class PicAdder
 
         foreach( $pics as $key => $pic )
         {
-            $pic->picableId = $primaryId;
-            $pic->picableType = $morphClass;
-            $pic->picableAttr = $attrValue;
+            $pic->picable_id = $primaryId;
+            $pic->picable_type = $morphClass;
+            $pic->picable_attr = $attrValue;
             $pic->priority = $priorityMax + count($pics) - $key;
             $pic->save();
         }

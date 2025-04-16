@@ -40,7 +40,7 @@ trait CanRelateFile
         }
         else
         {
-            return $this->morphMany($className, 'fileable')->where('fileableAttr', $attrValue)->orderByDesc('priority');
+            return $this->morphMany($className, 'fileable', 'fileable_type', 'fileable_id')->where('fileable_attr', $attrValue)->orderByDesc('priority');
         }
     }
 

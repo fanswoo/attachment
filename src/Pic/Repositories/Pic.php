@@ -10,32 +10,26 @@ use FF\Attachment\Pic\PathGetter;
 
 class Pic extends Model implements IPic, Attachment
 {
-    const UPDATED_AT = 'updatedAt';
-
-    const CREATED_AT = 'createdAt';
-
-    const DELETED_AT = 'deletedAt';
-
     protected $appends = ['url', 'downloadUrl'];
 
-    public $table = 'Pic';
+    public $table = 'pics';
 
     protected $fillable = [
         'id',
-        'userId',
+        'user_id',
         'title',
-        'fileName',
-        'fileSize',
-        'fileType',
+        'file_name',
+        'file_size',
+        'file_type',
         'priority',
         'md5',
         'thumb',
-        'picableId',
-        'picableType',
-        'picableAttr',
-        'updatedAt',
-        'createdAt',
-        'deletedAt',
+        'picable_id',
+        'picable_type',
+        'picable_attr',
+        'updated_at',
+        'created_at',
+        'deleted_at',
     ];
 
     public static function getMaxSize(): int
@@ -87,9 +81,9 @@ class Pic extends Model implements IPic, Attachment
         $pathGetter = app(PathGetter::class);
         $pathGetter->setParameter(
             id: $this->id,
-            fileName: $this->fileName,
+            fileName: $this->file_name,
             md5: $this->md5,
-            fileType: $this->fileType,
+            fileType: $this->file_type,
         );
 
         if ($width === 0 && $height === 0) {
@@ -135,9 +129,9 @@ class Pic extends Model implements IPic, Attachment
         $pathGetter = app(PathGetter::class);
         $pathGetter->setParameter(
             id: $this->id,
-            fileName: $this->fileName,
+            fileName: $this->file_name,
             md5: $this->md5,
-            fileType: $this->fileType,
+            fileType: $this->file_type,
         );
 
         return $pathGetter->getFullPath();
@@ -148,9 +142,9 @@ class Pic extends Model implements IPic, Attachment
         $pathGetter = app(PathGetter::class);
         $pathGetter->setParameter(
             id: $this->id,
-            fileName: $this->fileName,
+            fileName: $this->file_name,
             md5: $this->md5,
-            fileType: $this->fileType,
+            fileType: $this->file_type,
         );
 
         return Storage::disk(

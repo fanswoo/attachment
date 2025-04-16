@@ -2,13 +2,12 @@
 
 namespace FF\Attachment\File\Controllers;
 
-use FF\Controllers\Base\FFController;
 use FF\Attachment\File\Contracts\Controllers\FileController as IFileController;
 use FF\Attachment\File\Contracts\MutipleUploader;
 use FF\Attachment\File\Repositories\File;
 use Illuminate\Http\Request;
 
-class FileController extends FFController implements IFileController
+class FileController implements IFileController
 {
     public function __construct(protected MutipleUploader $mutipleUploader)
     {

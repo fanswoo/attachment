@@ -6,15 +6,15 @@ class PicSetter
 {
     static function set(string $className, string $attrValue, array $ids, string $morphClass, int $primaryId): void
     {
-        $pics = $className::where('picableType', $morphClass)
-            ->where('picableAttr', $attrValue)
-            ->where('picableId', $primaryId)
+        $pics = $className::where('picable_type', $morphClass)
+            ->where('picable_attr', $attrValue)
+            ->where('picable_id', $primaryId)
             ->get();
 
         foreach ($pics as $pic) {
-            $pic->picableId = 0;
-            $pic->picableType = '';
-            $pic->picableAttr = '';
+            $pic->picable_id = 0;
+            $pic->picable_type = '';
+            $pic->picable_attr = '';
             $pic->priority = 0;
             $pic->save();
         }

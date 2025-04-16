@@ -26,10 +26,10 @@ class PicCreator implements AttachmentCreator
         int $fileSize
     ): bool {
         $pic = new $this->picClassName;
-        $pic->fileSize = $fileSize;
-        $pic->fileName = $fileName;
+        $pic->file_size = $fileSize;
+        $pic->file_name = $fileName;
         $pic->title = $title;
-        $pic->fileType = $fileType;
+        $pic->file_type = $fileType;
         $pic->md5 = $this->getRandomMd5();
         $result = $pic->save();
 

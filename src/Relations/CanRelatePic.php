@@ -45,7 +45,7 @@ trait CanRelatePic
         }
         else
         {
-            return $this->morphMany($className, 'picable')->where('picableAttr', $attrValue)->orderByDesc('priority');
+            return $this->morphMany($className, 'picable', 'picable_type', 'picable_id')->where('picable_attr', $attrValue)->orderByDesc('priority');
         }
     }
 

@@ -22,7 +22,7 @@ class FileModifyer implements IFileModifyer
     ) {
         $this->pathGetter->setParameter(
             id: $attachment->id,
-            fileName: $attachment->fileName,
+            fileName: $attachment->file_name,
             md5: $attachment->md5,
         );
         $fullSavePath = $this->pathGetter->getFullPath();

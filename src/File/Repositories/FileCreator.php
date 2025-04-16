@@ -22,10 +22,10 @@ class FileCreator implements AttachmentCreator
         int $fileSize
     ): bool {
         $file = new $this->fileClassName;
-        $file->fileSize = $fileSize;
-        $file->fileName = $fileName;
+        $file->file_size = $fileSize;
+        $file->file_name = $fileName;
         $file->title = $title;
-        $file->fileType = $fileType;
+        $file->file_type = $fileType;
         $file->md5 = $this->getRandomMd5();
         $result = $file->save();
 
