@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\ORM\Relations;
+namespace FF\Attachment\Relations;
 
 trait ORMPic
 {
@@ -37,19 +37,13 @@ trait ORMPic
             return;
         }
 
-        // 取出 priority 最大值
-        $priorityMaxPic = orm( $className, [
-            'where' => [
-                'picableType' => $this->getMorphClass(),
-                'picableAttr' => $attrValue
-            ],
-            'orderBy' => [
-                'priority' => 'DESC'
-            ]
-        ]);
+        $priorityMaxPic = $className::where('picableType', $this->getMorphClass())
+            ->where('picableAttr', $attrValue)
+            ->orderBy('priority', 'DESC')
+            ->first();
         $priorityMax = $priorityMaxPic->priority;
 
-        $pics = orm( $className, $ids);
+        $pics = $className::whereIn('id', $ids)->get();
 
         foreach( $pics as $key => $pic )
         {
@@ -63,7 +57,7 @@ trait ORMPic
 
     private function deletePics($className, $ids = []): void
     {
-        $Pics = orm( $className, $ids);
+        $Pics = $className::whereIn('id', $ids)->get();
 
         foreach( $Pics as $Pic )
         {
@@ -77,15 +71,10 @@ trait ORMPic
 
     private function setPics($className, $attrValue, $ids = []): void
     {
-        // 先清空所有圖片
-        $pics = orm( $className, [
-            'where' => [
-                'picableType' => $this->getMorphClass(),
-                'picableAttr' => $attrValue,
-                'picableId' => $this->id
-            ],
-            'count' => 100
-        ]);
+        $pics = $className::where('picableType', $this->getMorphClass())
+            ->where('picableAttr', $attrValue)
+            ->where('picableId', $this->id)
+            ->get();
         
         foreach( $pics as $pic )
         {

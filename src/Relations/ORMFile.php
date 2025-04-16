@@ -1,6 +1,6 @@
 <?php
 
-namespace FF\ORM\Relations;
+namespace FF\Attachment\Relations;
 
 trait ORMFile
 {
@@ -28,19 +28,13 @@ trait ORMFile
 
     private function addFiles($className, $attrValue, $ids = [])
     {
-        // 取出 priority 最大值
-        $priorityMaxFile = orm( $className, [
-            'where' => [
-                'fileableType' => $this->getMorphClass(),
-                'fileableAttr' => $attrValue
-            ],
-            'orderBy' => [
-                'priority' => 'DESC'
-            ]
-        ]);
+        $priorityMaxFile = $className::where('fileableType', $this->getMorphClass())
+            ->where('fileableAttr', $attrValue)
+            ->orderBy('priority', 'DESC')
+            ->first();
         $priorityMax = $priorityMaxFile->priority;
 
-        $Files = orm( $className, $ids);
+        $Files = $className::whereIn('id', $ids)->get();
 
         foreach( $Files as $key => $File )
         {
@@ -54,7 +48,7 @@ trait ORMFile
 
     private function deleteFiles($className, $ids = [])
     {
-        $Files = orm( $className, $ids );
+        $Files = $className::whereIn('id', $ids)->get();
 
         foreach( $Files as $File )
         {
@@ -68,15 +62,10 @@ trait ORMFile
 
     private function setFiles($className, $attrValue, $ids = [])
     {
-        // 先清空所有圖片
-        $Files = orm( $className, [
-            'where' => [
-                'fileableType' => $this->getMorphClass(),
-                'fileableAttr' => $attrValue,
-                'fileableId' => $this->id
-            ],
-            'count' => 100
-        ]);
+        $Files = $className::where('fileableType', $this->getMorphClass())
+            ->where('fileableAttr', $attrValue)
+            ->where('fileableId', $this->id)
+            ->get();
         
         foreach( $Files as $File )
         {

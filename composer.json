@@ -1,0 +1,38 @@
+{
+  "name": "fanswoo/attachment",
+  "description": "fanswoo attachment",
+  "type": "library",
+  "authors": [
+    {
+      "name": "fansWoo",
+      "email": "service@fanswoo.com"
+    }
+  ],
+  "keywords": [
+    "attachment",
+    "fanswoo"
+  ],
+  "homepage": "https://fanswoo.com",
+  "support": {
+    "issues": "https://github.com/fanswoo/framework-core",
+    "source": "https://github.com/fanswoo/framework-core"
+  },
+  "require": {
+    "php": "^8.4",
+    "laravel/framework": "^11.0",
+    "myclabs/deep-copy": "^1.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "FF\\Attachment\\": "./src/",
+      "FF\\Attachment\\Controllers\\": "./src/Http/Controllers/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  }
+}
