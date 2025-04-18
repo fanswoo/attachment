@@ -34,5 +34,12 @@
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "FF\\Attachment\\Attachment\\AttachmentProvider"
+      ]
+    }
   }
 }

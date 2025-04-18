@@ -10,7 +10,7 @@ class FileAdder
             ->where('fileable_attr', $attrValue)
             ->orderBy('priority', 'DESC')
             ->first();
-        $priorityMax = $priorityMaxFile->priority;
+        $priorityMax = $priorityMaxFile ? $priorityMaxFile->priority : 0;
 
         $Files = $className::whereIn('id', $ids)->get();
 

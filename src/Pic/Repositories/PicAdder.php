@@ -14,7 +14,7 @@ class PicAdder
             ->where('picable_attr', $attrValue)
             ->orderBy('priority', 'DESC')
             ->first();
-        $priorityMax = $priorityMaxPic->priority;
+        $priorityMax = $priorityMaxPic ? $priorityMaxPic->priority : 0;
 
         $pics = $className::whereIn('id', $ids)->get();
 
