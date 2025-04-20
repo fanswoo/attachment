@@ -5,14 +5,16 @@ namespace FF\Attachment\Attachment;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
+use Spatie\LaravelPackageTools\Package;
 
 class AttachmentProvider extends ServiceProvider
 {
+
+    public static string $name = 'attachment';
+
     public function boot()
     {
-//        $this->publishesMigrations([
-//            __DIR__.'/../../database/migrations' => database_path('migrations'),
-//        ], 'migrations');
         $this->registerMigrations(__DIR__.'/../../database/migrations');
         $this->registerRoutes();
     }
@@ -76,7 +78,7 @@ class AttachmentProvider extends ServiceProvider
     {
         $this->app->bind(
             Contracts\Validator::class,
-            \File\Validator::class,
+            \FF\Attachment\File\Validator::class,
         );
     }
 
