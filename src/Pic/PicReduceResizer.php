@@ -98,7 +98,7 @@ class PicReduceResizer extends PicResizer
 
         imagepng($newImage, $temporaryPathFromStorage, 9);
 
-        Storage::disk(config('filesystems.upload_disk'))->put(
+        Storage::disk(config('attachment.upload_disk'))->put(
             $this->picHandler->getFullSavePath(),
             Storage::disk('storage')->get($temporaryPath),
             'public'
@@ -141,7 +141,7 @@ class PicReduceResizer extends PicResizer
 
         imagejpeg($newImage, $temporaryPathFromStorage, 100);
 
-        Storage::disk(config('filesystems.upload_disk'))->put(
+        Storage::disk(config('attachment.upload_disk'))->put(
             $this->picHandler->getFullSavePath(),
             Storage::disk('storage')->get($temporaryPath),
             'public'

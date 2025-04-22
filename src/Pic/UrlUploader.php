@@ -21,7 +21,7 @@ class UrlUploader extends AbstractUploader implements IUrlUploader, IUploader
         $file = $this->fileGetContents($url, $verifySSL);
 
         $temporaryPath = 'temporary/UrlUploaderTemp';
-        Storage::disk(config('filesystems.storage'))->put(
+        Storage::disk(config('attachment.storage'))->put(
             $temporaryPath,
             $file,
             'public'
@@ -29,13 +29,13 @@ class UrlUploader extends AbstractUploader implements IUrlUploader, IUploader
 
         $this->attachmentProcessor->setFile(
             file: $file,
-            fileSize: Storage::disk(config('filesystems.storage'))->size(
+            fileSize: Storage::disk(config('attachment.storage'))->size(
                 $temporaryPath,
             ),
             originPathName: $url,
             fileName: $fileName,
             title: $fileName,
-            fileType: Storage::disk(config('filesystems.storage'))->mimeType(
+            fileType: Storage::disk(config('attachment.storage'))->mimeType(
                 $temporaryPath,
             ),
             uploadDisk: $uploadDisk,

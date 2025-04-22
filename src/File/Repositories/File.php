@@ -37,7 +37,12 @@ class File extends Model implements IFile, Attachment
         return 200 * 1024 * 1024;
     }
 
-    public static function getDenyType(): array
+    public static function getAllowType(): array|null
+    {
+        return null;
+    }
+
+    public static function getDenyType(): array|null
     {
         return [
             'com',
@@ -129,7 +134,7 @@ class File extends Model implements IFile, Attachment
         );
 
         return Storage::disk(
-            $uploadDisk ?? config('filesystems.upload_disk'),
+            $uploadDisk ?? config('attachment.upload_disk'),
         )->download($pathGetter->getFullPath(), $pathGetter->getFileName());
     }
 }

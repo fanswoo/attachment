@@ -19,6 +19,16 @@ class AttachmentProvider extends ServiceProvider
         $this->registerRoutes();
     }
 
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/../../config/attachment.php', 'attachment'
+        );
+        $this->registerAttachment();
+        $this->registerFile();
+        $this->registerPic();
+    }
+
     protected function registerMigrations(string $directory): void
     {
         if ($this->app->runningInConsole()) {
@@ -31,6 +41,10 @@ class AttachmentProvider extends ServiceProvider
             };
 
             $this->publishes(iterator_to_array($generator($directory)), 'migrations');
+
+            $this->publishes([
+                __DIR__.'/../../config/attachment.php' => config_path('attachment.php'),
+            ], 'config');
         }
     }
 
@@ -65,13 +79,6 @@ class AttachmentProvider extends ServiceProvider
             'file/rename',
             '\FF\Attachment\File\Contracts\Controllers\FileController@rename',
         );
-    }
-
-    public function register()
-    {
-        $this->registerAttachment();
-        $this->registerFile();
-        $this->registerPic();
     }
 
     private function registerAttachment()

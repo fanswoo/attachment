@@ -37,9 +37,14 @@ class Pic extends Model implements IPic, Attachment
         return 200 * 1024 * 1024;
     }
 
-    public static function getAllowType(): array
+    public static function getAllowType(): array|null
     {
         return ['jpg', 'jpeg', 'png', 'gif'];
+    }
+
+    public static function getDenyType(): array|null
+    {
+        return null;
     }
 
     public static function getScaleSizes(): array
@@ -87,12 +92,12 @@ class Pic extends Model implements IPic, Attachment
         );
 
         if ($width === 0 && $height === 0) {
-            return Storage::disk(config('filesystems.upload_disk'))->url(
+            return Storage::disk(config('attachment.upload_disk'))->url(
                 $pathGetter->getFullPath(),
             );
         }
 
-        return Storage::disk(config('filesystems.upload_disk'))->url(
+        return Storage::disk(config('attachment.upload_disk'))->url(
             $pathGetter->getFullPathVariant(
                 width: $width,
                 height: $height,
@@ -148,7 +153,7 @@ class Pic extends Model implements IPic, Attachment
         );
 
         return Storage::disk(
-            $uploadDisk ?? config('filesystems.upload_disk'),
+            $uploadDisk ?? config('attachment.upload_disk'),
         )->download($pathGetter->getFullPath(), $pathGetter->getFileName());
     }
 }

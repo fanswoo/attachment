@@ -43,7 +43,7 @@ class FileModifyer implements IFileModifyer
 
         $fullSavePath = $this->pathGetter->getFullPath();
         return Storage::disk(
-            $uploadDisk ?? config('filesystems.upload_disk'),
+            $uploadDisk ?? config('attachment.upload_disk'),
         )->put($fullSavePath, $file, 'public');
     }
 
@@ -126,11 +126,11 @@ class FileModifyer implements IFileModifyer
         $directory = $this->pathGetter->getDirectory();
         if (
             !Storage::disk(
-                $uploadDisk ?? config('filesystems.upload_disk'),
+                $uploadDisk ?? config('attachment.upload_disk'),
             )->has($directory)
         ) {
             StorageVisibility::makeDirectoryWithAllVisibility(
-                $uploadDisk ?? config('filesystems.upload_disk'),
+                $uploadDisk ?? config('attachment.upload_disk'),
                 $directory,
                 'public'
             );

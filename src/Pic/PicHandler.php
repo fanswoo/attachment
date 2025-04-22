@@ -59,7 +59,7 @@ class PicHandler
     public function getUploadPath()
     {
         return Storage::disk(
-            $this->uploadDisk ?? config('filesystems.upload_disk'),
+            $this->uploadDisk ?? config('attachment.upload_disk'),
         )->path($this->fullSavePath);
     }
 

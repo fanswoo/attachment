@@ -16,10 +16,11 @@ class FileModifyer implements IFileModifyer
 
     public function modify(
         Attachment $attachment,
-        string $file,
-        string $fileType = null,
-        string $uploadDisk = null
-    ) {
+        string     $file,
+        ?string    $fileType,
+        ?string    $uploadDisk
+    )
+    {
         $this->pathGetter->setParameter(
             id: $attachment->id,
             fileName: $attachment->file_name,
@@ -29,13 +30,13 @@ class FileModifyer implements IFileModifyer
         $directory = $this->pathGetter->getDirectory();
 
         StorageVisibility::makeDirectoryWithAllVisibility(
-            $uploadDisk ?? config('filesystems.upload_disk'),
+            $uploadDisk ?? config('attachment.upload_disk'),
             $directory,
             'public'
         );
 
         return Storage::disk(
-            $uploadDisk ?? config('filesystems.upload_disk'),
+            $uploadDisk ?? config('attachment.upload_disk'),
         )->put($fullSavePath, $file, 'public');
     }
 }

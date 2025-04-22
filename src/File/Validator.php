@@ -26,7 +26,18 @@ class Validator implements IValidator
         $explodeArr = explode('.', $fileName);
         $ext = array_pop($explodeArr);
 
-        if (in_array($ext, $this->fileClassName::getDenyType())) {
+        if (
+            $this->fileClassName::getAllowType() &&
+            !in_array($ext, $this->fileClassName::getAllowType())
+        ) {
+            $this->errorMessage = '檔案類型為禁止項目';
+            return false;
+        }
+
+        if (
+            $this->fileClassName::getDenyType() &&
+            in_array($ext, $this->fileClassName::getDenyType())
+        ) {
             $this->errorMessage = '檔案類型為禁止項目';
             return false;
         }

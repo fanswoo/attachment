@@ -2,7 +2,7 @@
 
 ## Fanswoo/Attachment for Filament
 
-This package provides a Filament resource that shows you all of the activity logs and detailed view of each log created using the `spatie/laravel-activitylog` package. It also provides a relationship manager for related models.
+This package provides files and pictures upload manager. it can also support Filament forms field.
 
 ### Requirements
 
@@ -17,10 +17,10 @@ You can install the package via composer:
 composer require fanswoo/attachment
 ```
 
-After that run the install command:
+After that run the `vendor:publish` command:
 
 ```bash
-php artisan attachment:install
+php artisan vendor:publish --provider=FF\\Attachment\\Attachment\\AttachmentProvider --tag=migrations
 ```
 
 This will publish the migrations from `fanswoo/attachment`
@@ -31,24 +31,32 @@ And run migrates
 php artisan migrate
 ```
 
-You can manually publish the configuration file with:
-
-```bash
-php artisan vendor:publish --provider=FF\\Attachment\\Attachment\\AttachmentProvider --tag=migrations
-```
-
 ## Usage
 
-### Basic Spatie ActivityLog usage
+### Files usage
 
-In you `Model` add `Spatie\Activitylog\Traits\LogsActivity` trait
+In you `Model` add `FF\Attachment\Relations\CanRelateFile` trait
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use FF\Attachment\CanFile;
+use FF\Attachment\Relations\CanRelateFile;
 
 class Record extends Model
 {
-    use CanFile;
+    use CanRelateFile;
+}
+```
+
+### Pics usage
+
+In you `Model` add `FF\Attachment\Relations\CanRelatePic` trait
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use FF\Attachment\Relations\CanRelatePic;
+
+class Record extends Model
+{
+    use CanRelatePic;
 }
 ```
