@@ -1,13 +1,10 @@
 <?php
 
-namespace FF\Attachment\Attachment;
+namespace FF\Attachment\Core;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Spatie\LaravelPackageTools\Package;
-
 class AttachmentProvider extends ServiceProvider
 {
 

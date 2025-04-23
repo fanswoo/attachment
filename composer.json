@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "FF\\Attachment\\Attachment\\AttachmentProvider"
+        "FF\\Attachment\\Core\\AttachmentProvider"
       ]
     }
   }
