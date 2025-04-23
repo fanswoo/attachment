@@ -81,7 +81,7 @@ class AttachmentProvider extends ServiceProvider
     private function registerAttachment()
     {
         $this->app->bind(
-            Contracts\Validator::class,
+            \FF\Attachment\File\Contracts\Validator::class,
             \FF\Attachment\File\Validator::class,
         );
     }
