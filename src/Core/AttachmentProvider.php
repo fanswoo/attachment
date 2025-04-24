@@ -48,32 +48,32 @@ class AttachmentProvider extends ServiceProvider
     protected function registerRoutes(): void
     {
         Route::post(
-            'pic/upload',
+            'api/pic/upload',
             '\FF\Attachment\Pic\Contracts\Controllers\PicController@upload',
         );
 
         Route::any(
-            'pic/delete',
+            'api/pic/delete',
             '\FF\Attachment\Pic\Contracts\Controllers\PicController@delete',
         );
 
         Route::post(
-            'file/upload',
+            'api/file/upload',
             '\FF\Attachment\File\Contracts\Controllers\FileController@upload',
         );
 
         Route::get(
-            'file/download/{id}',
+            'api/file/download/{id}',
             '\FF\Attachment\File\Contracts\Controllers\FileController@download',
         );
 
         Route::any(
-            'file/delete',
+            'api/file/delete',
             '\FF\Attachment\File\Contracts\Controllers\FileController@delete',
         );
 
         Route::any(
-            'file/rename',
+            'api/file/rename',
             '\FF\Attachment\File\Contracts\Controllers\FileController@rename',
         );
     }

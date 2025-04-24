@@ -25,7 +25,6 @@ class MutipleUploader implements IMutipleUploader
             $uploader->setFile($file);
             $this->uploaders[] = $uploader;
         }
-//        dd($this->uploader);
     }
 
     public function upload(): bool

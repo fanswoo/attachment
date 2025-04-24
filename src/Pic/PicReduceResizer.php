@@ -84,15 +84,13 @@ class PicReduceResizer extends PicResizer
 
         imagesavealpha($newImage, true);
 
-        Storage::disk('storage')->makeDirectory('temporary');
-        Storage::disk(
-            'storage'
-        )->setVisibility('temporary', 'public');
+        Storage::makeDirectory('temporary');
+        Storage::setVisibility('temporary', 'public');
 
         $temporaryPath =
             'temporary' . DIRECTORY_SEPARATOR . Str::random(8) . '.tmp';
 
-        $temporaryPathFromStorage = Storage::disk('storage')->path(
+        $temporaryPathFromStorage = Storage::path(
             $temporaryPath,
         );
 
@@ -100,10 +98,10 @@ class PicReduceResizer extends PicResizer
 
         Storage::disk(config('attachment.upload_disk'))->put(
             $this->picHandler->getFullSavePath(),
-            Storage::disk('storage')->get($temporaryPath),
+            Storage::get($temporaryPath),
             'public'
         );
-        Storage::disk('storage')->delete($temporaryPath);
+        Storage::delete($temporaryPath);
 
         imagedestroy($newImage);
     }
@@ -127,15 +125,13 @@ class PicReduceResizer extends PicResizer
             $originSize['height'],
         );
 
-        Storage::disk('storage')->makeDirectory('temporary');
+        Storage::makeDirectory('temporary');
 
-        Storage::disk(
-            'storage'
-        )->setVisibility('temporary', 'public');
+        Storage::setVisibility('temporary', 'public');
 
         $temporaryPath =
             'temporary' . DIRECTORY_SEPARATOR . Str::random(8) . '.tmp';
-        $temporaryPathFromStorage = Storage::disk('storage')->path(
+        $temporaryPathFromStorage = Storage::path(
             $temporaryPath,
         );
 
@@ -143,11 +139,11 @@ class PicReduceResizer extends PicResizer
 
         Storage::disk(config('attachment.upload_disk'))->put(
             $this->picHandler->getFullSavePath(),
-            Storage::disk('storage')->get($temporaryPath),
+            Storage::get($temporaryPath),
             'public'
         );
 
-        Storage::disk('storage')->delete($temporaryPath);
+        Storage::delete($temporaryPath);
 
         imagedestroy($newImage);
     }

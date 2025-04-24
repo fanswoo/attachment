@@ -12,15 +12,18 @@ class FileAdder
             ->first();
         $priorityMax = $priorityMaxFile ? $priorityMaxFile->priority : 0;
 
-        $Files = $className::whereIn('id', $ids)->get();
+        $files = $className::whereIn('id', $ids)->get()->sortBy(function ($file) use ($ids) {;
+            return array_search($file->id, $ids);
+        });
+        $files = $files->values();
 
-        foreach( $Files as $key => $File )
+        foreach( $files as $key => $file )
         {
-            $File->fileable_id = $primaryId;
-            $File->fileable_type = $morphClass;
-            $File->fileable_attr = $attrValue;
-            $File->priority = $priorityMax + count($Files) - $key;
-            $File->save();
+            $file->fileable_id = $primaryId;
+            $file->fileable_type = $morphClass;
+            $file->fileable_attr = $attrValue;
+            $file->priority = $priorityMax + count($files) - $key;
+            $file->save();
         }
     }
 }

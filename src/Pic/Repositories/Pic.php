@@ -32,6 +32,24 @@ class Pic extends Model implements IPic, Attachment
         'deleted_at',
     ];
 
+    protected $attributes = [
+        'file_name' => '',
+        'file_type' => '',
+        'md5' => '',
+        'thumb' => '',
+        'picable_attr' => '',
+        'picable_type' => '',
+        'picable_id' => 0,
+        'user_id' => 0,
+        'priority' => 0,
+    ];
+
+    protected $casts = [
+        'picable_id' => 'integer',
+        'user_id' => 'integer',
+        'priority' => 'integer'
+    ];
+
     public static function getMaxSize(): int
     {
         return 200 * 1024 * 1024;

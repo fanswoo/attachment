@@ -1,45 +1,66 @@
 {
-  "name": "fanswoo/attachment",
-  "description": "fanswoo attachment",
-  "type": "library",
-  "authors": [
-    {
-      "name": "fansWoo",
-      "email": "service@fanswoo.com"
+    "name": "fanswoo/attachment",
+    "description": "fanswoo attachment",
+    "type": "library",
+    "authors": [
+        {
+            "name": "fansWoo",
+            "email": "service@fanswoo.com"
+        }
+    ],
+    "keywords": [
+        "attachment",
+        "fanswoo"
+    ],
+    "homepage": "https://fanswoo.com",
+    "support": {
+        "issues": "https://github.com/fanswoo/framework-core",
+        "source": "https://github.com/fanswoo/framework-core"
+    },
+    "require": {
+        "php": "^8.4",
+        "laravel/framework": "^11.0",
+        "myclabs/deep-copy": "^1.11"
+    },
+    "require-dev": {
+        "laravel/dusk": "^8.3",
+        "orchestra/testbench": "^9.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "FF\\Attachment\\": "./src/",
+            "FF\\Attachment\\Controllers\\": "./src/Http/Controllers/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FF\\Attachment\\Core\\AttachmentProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ]
     }
-  ],
-  "keywords": [
-    "attachment",
-    "fanswoo"
-  ],
-  "homepage": "https://fanswoo.com",
-  "support": {
-    "issues": "https://github.com/fanswoo/framework-core",
-    "source": "https://github.com/fanswoo/framework-core"
-  },
-  "require": {
-    "php": "^8.4",
-    "laravel/framework": "^11.0",
-    "myclabs/deep-copy": "^1.11"
-  },
-  "autoload": {
-    "psr-4": {
-      "FF\\Attachment\\": "./src/",
-      "FF\\Attachment\\Controllers\\": "./src/Http/Controllers/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/",
-      "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "FF\\Attachment\\Core\\AttachmentProvider"
-      ]
-    }
-  }
 }

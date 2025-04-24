@@ -16,7 +16,10 @@ class PicAdder
             ->first();
         $priorityMax = $priorityMaxPic ? $priorityMaxPic->priority : 0;
 
-        $pics = $className::whereIn('id', $ids)->get();
+        $pics = $className::whereIn('id', $ids)->get()->sortBy(function ($pic) use ($ids) {
+            return array_search($pic->id, $ids);
+        });
+        $pics = $pics->values();
 
         foreach( $pics as $key => $pic )
         {

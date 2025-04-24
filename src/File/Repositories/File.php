@@ -2,7 +2,6 @@
 
 namespace FF\Attachment\File\Repositories;
 
-use App\Common\ClassTag\ClassTag;
 use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 use FF\Attachment\File\Contracts\Repositories\File as IFile;
 use FF\Attachment\File\PathGetter;
@@ -30,6 +29,23 @@ class File extends Model implements IFile, Attachment
         'updated_at',
         'created_at',
         'deleted_at',
+    ];
+
+    protected $attributes = [
+        'file_name' => '',
+        'file_type' => '',
+        'md5' => '',
+        'fileable_attr' => '',
+        'fileable_type' => '',
+        'fileable_id' => 0,
+        'user_id' => 0,
+        'priority' => 0,
+    ];
+
+    protected $casts = [
+        'fileable_id' => 'integer',
+        'user_id' => 'integer',
+        'priority' => 'integer'
     ];
 
     public static function getMaxSize(): int
