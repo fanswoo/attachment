@@ -14,8 +14,6 @@ class FileSetter
         foreach( $Files as $File )
         {
             $File->fileable_id = 0;
-            $File->fileable_type = '';
-            $File->fileable_attr = '';
             $File->priority = 0;
             $File->save();
         }

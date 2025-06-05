@@ -13,8 +13,6 @@ class PicSetter
 
         foreach ($pics as $pic) {
             $pic->picable_id = 0;
-            $pic->picable_type = '';
-            $pic->picable_attr = '';
             $pic->priority = 0;
             $pic->save();
         }
