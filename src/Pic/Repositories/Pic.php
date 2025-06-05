@@ -4,12 +4,15 @@ namespace FF\Attachment\Pic\Repositories;
 
 use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use FF\Attachment\Pic\Contracts\Repositories\Pic as IPic;
 use FF\Attachment\Pic\PathGetter;
 
 class Pic extends Model implements IPic, Attachment
 {
+    use SoftDeletes;
+
     protected $appends = ['url', 'downloadUrl'];
 
     public $table = 'pics';

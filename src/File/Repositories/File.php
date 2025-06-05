@@ -6,10 +6,13 @@ use FF\Attachment\Attachment\Contracts\Repositories\Attachment;
 use FF\Attachment\File\Contracts\Repositories\File as IFile;
 use FF\Attachment\File\PathGetter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
 class File extends Model implements IFile, Attachment
 {
+    use SoftDeletes;
+
     public $table = 'files';
 
     protected $appends = ['downloadUrl'];
