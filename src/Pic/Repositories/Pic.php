@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Log; // 建議加入日誌記錄
 
 class Pic extends Model implements IPic, Attachment
 {
-    use SoftDeletes;
+    use SoftDeletes {
+        SoftDeletes::forceDelete as softDeletesForceDelete;
+    }
 
     protected $appends = ['url', 'downloadUrl'];
 
@@ -81,6 +83,50 @@ class Pic extends Model implements IPic, Attachment
         ];
     }
 
+    /**
+     * 根據 picable_type 和 picable_attr 取得對應的縮放尺寸
+     */
+    protected function getRelatedScaleSizes(): array
+    {
+        if (empty($this->picable_type)) {
+            Log::warning("Pic ID {$this->id}: picable_type is empty, using default scale sizes.");
+            return static::getScaleSizes();
+        }
+
+        try {
+            if (!class_exists($this->picable_type)) {
+                Log::warning("Pic ID {$this->id}: picable_type class '{$this->picable_type}' does not exist, using default scale sizes.");
+                return static::getScaleSizes();
+            }
+
+            $relatedClass = $this->picable_type;
+
+            // 如果有 picable_attr，檢查該屬性是否有 getScaleSizes 方法
+            if (!empty($this->picable_attr)) {
+                $relatedInstance = new $relatedClass();
+                if ($relatedInstance->{$this->picable_attr}()->getRelated()::getScaleSizes()) {
+                    Log::info("Pic ID {$this->id}: Using scale sizes from {$relatedClass}->{$this->picable_attr}->getScaleSizes()");
+                    return $relatedInstance->{$this->picable_attr}()->getRelated()::getScaleSizes();
+                }
+                Log::warning("Pic ID {$this->id}: {$relatedClass}->{$this->picable_attr} does not have getScaleSizes method, using default scale sizes.");
+                return static::getScaleSizes();
+            }
+
+            // 如果沒有 picable_attr，檢查相關類別是否有 getScaleSizes 方法
+            if (method_exists($relatedClass, 'getScaleSizes')) {
+                Log::info("Pic ID {$this->id}: Using scale sizes from {$relatedClass}::getScaleSizes()");
+                return $relatedClass::getScaleSizes();
+            }
+
+            Log::warning("Pic ID {$this->id}: picable_type class '{$this->picable_type}' does not have getScaleSizes method, using default scale sizes.");
+            return static::getScaleSizes();
+
+        } catch (\Exception $e) {
+            Log::error("Pic ID {$this->id}: Error getting scale sizes from related class: " . $e->getMessage());
+            return static::getScaleSizes();
+        }
+    }
+
     public function picable()
     {
         return $this->morphTo();
@@ -98,7 +144,7 @@ class Pic extends Model implements IPic, Attachment
         if (empty($this->md5) || empty($this->id) || empty($this->file_name)) {
             Log::warning("Pic ID {$this->id} forceDelete: Missing md5, id, or file_name for file deletion.");
             // 即使檔案資訊不完整，仍然嘗試刪除資料庫記錄
-            return parent::forceDelete($options);
+            return $this->softDeletesForceDelete($options);
         }
 
         try {
@@ -107,7 +153,7 @@ class Pic extends Model implements IPic, Attachment
                 Log::error("Pic ID {$this->id} forceDelete: Storage disk name 'attachment.upload_disk' is not configured.");
                 // 如果磁碟未配置，可以選擇拋出異常或僅記錄錯誤並繼續刪除資料庫記錄
                 // throw new \Exception("Storage disk 'attachment.upload_disk' is not configured.");
-                return parent::forceDelete($options); // 或者直接刪除資料庫記錄
+                return $this->softDeletesForceDelete($options); // 或者直接刪除資料庫記錄
             }
             $storage = Storage::disk($diskName);
 
@@ -134,16 +180,12 @@ class Pic extends Model implements IPic, Attachment
             }
 
             // 2. 刪除所有變體/縮圖
-            $scaleSizes = static::getScaleSizes();
+            $scaleSizes = $this->getRelatedScaleSizes();
             foreach ($scaleSizes as $scaleSize) {
                 $variantPath = $pathGetter->getFullPathVariant(
                     width: $scaleSize['width'],
                     height: $scaleSize['height'],
                     fileType: $scaleSize['fileType'] ?? null, // 使用 scaleSize 中定義的 fileType
-                );
-                dd(
-                    $variantPath,
-                    $storage->exists($variantPath)
                 );
                 if ($storage->exists($variantPath)) {
                     if (!$storage->delete($variantPath)) {
@@ -168,8 +210,11 @@ class Pic extends Model implements IPic, Attachment
             // throw $e; // 如果希望錯誤冒泡並可能回滾事務（如果在事務中）
         }
 
-        // 最後，調用父類的 forceDelete 來刪除資料庫記錄
-        return parent::forceDelete($options);
+        // 最後，調用 SoftDeletes trait 的 forceDelete 來刪除資料庫記錄
+        Log::info("Pic ID {$this->id} forceDelete: About to call SoftDeletes::forceDelete()");
+        $result = $this->softDeletesForceDelete();
+        Log::info("Pic ID {$this->id} forceDelete: SoftDeletes::forceDelete() result: " . ($result ? 'true' : 'false'));
+        return $result;
     }
 
     public function url(
@@ -209,7 +254,7 @@ class Pic extends Model implements IPic, Attachment
 
     public function getUrlAttribute()
     {
-        $scaleSizes = static::getScaleSizes();
+        $scaleSizes = $this->getRelatedScaleSizes();
         $urls = [
             'w0h0' => $this->url(0, 0), // 原圖
         ];
