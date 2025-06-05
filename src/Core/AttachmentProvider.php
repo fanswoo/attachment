@@ -270,6 +270,8 @@ class AttachmentProvider extends ServiceProvider
             $this->commands([
                 \FF\Attachment\Console\PicClear::class,
                 \FF\Attachment\Console\PicClearUnmatched::class,
+                \FF\Attachment\Console\FileClear::class,
+                \FF\Attachment\Console\FileClearUnmatched::class,
             ]);
         }
     }
