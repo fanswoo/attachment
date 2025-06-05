@@ -8,10 +8,13 @@ use FF\Attachment\File\PathGetter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class File extends Model implements IFile, Attachment
 {
-    use SoftDeletes;
+    use SoftDeletes {
+        SoftDeletes::forceDelete as softDeletesForceDelete;
+    }
 
     public $table = 'files';
 
@@ -124,6 +127,70 @@ class File extends Model implements IFile, Attachment
     public function fileable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * 永久刪除模型及其對應的儲存檔案
+     *
+     * @param array $options
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function forceDelete(array $options = [])
+    {
+        if (empty($this->md5) || empty($this->id) || empty($this->file_name)) {
+            Log::warning("File ID {$this->id} forceDelete: Missing md5, id, or file_name for file deletion.");
+            // 即使檔案資訊不完整，仍然嘗試刪除資料庫記錄
+            return $this->softDeletesForceDelete($options);
+        }
+
+        try {
+            $diskName = config('attachment.upload_disk');
+            if (empty($diskName)) {
+                Log::error("File ID {$this->id} forceDelete: Storage disk name 'attachment.upload_disk' is not configured.");
+                // 如果磁碟未配置，可以選擇拋出異常或僅記錄錯誤並繼續刪除資料庫記錄
+                return $this->softDeletesForceDelete($options);
+            }
+            $storage = Storage::disk($diskName);
+
+            /** @var PathGetter $pathGetter */
+            $pathGetter = app(PathGetter::class);
+            $pathGetter->setParameter(
+                id: $this->id,
+                fileName: $this->file_name,
+                md5: $this->md5,
+                fileType: $this->file_type,
+            );
+
+            // 刪除檔案
+            $filePath = $pathGetter->getFullPath();
+            if ($storage->exists($filePath)) {
+                if (!$storage->delete($filePath)) {
+                    Log::error("File ID {$this->id} forceDelete: Failed to delete file at path: {$filePath} on disk: {$diskName}");
+                } else {
+                    Log::info("File ID {$this->id} forceDelete: Successfully deleted file: {$filePath} from disk: {$diskName}");
+                }
+            } else {
+                Log::warning("File ID {$this->id} forceDelete: File not found at path: {$filePath} on disk: {$diskName}");
+            }
+
+        } catch (\Exception $e) {
+            // 記錄檔案刪除過程中發生的任何錯誤
+            Log::error("File ID {$this->id} forceDelete: Error during file deletion: " . $e->getMessage(), [
+                'exception' => $e,
+                'file_id' => $this->id,
+                'file_name' => $this->file_name,
+                'md5' => $this->md5,
+            ]);
+            // 根據需求決定是否要因為檔案刪除失敗而阻止資料庫記錄的刪除
+            // throw $e; // 如果希望錯誤冒泡並可能回滾事務（如果在事務中）
+        }
+
+        // 最後，調用 SoftDeletes trait 的 forceDelete 來刪除資料庫記錄
+        Log::info("File ID {$this->id} forceDelete: About to call SoftDeletes::forceDelete()");
+        $result = $this->softDeletesForceDelete($options);
+        Log::info("File ID {$this->id} forceDelete: SoftDeletes::forceDelete() result: " . ($result ? 'true' : 'false'));
+        return $result;
     }
 
     public function getDownloadUrlAttribute()
