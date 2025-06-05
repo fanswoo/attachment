@@ -14,6 +14,7 @@ class AttachmentProvider extends ServiceProvider
     {
         $this->registerMigrations(__DIR__.'/../../database/migrations');
         $this->registerRoutes();
+        $this->registerCommands();
     }
 
     public function register()
@@ -261,5 +262,15 @@ class AttachmentProvider extends ServiceProvider
             ->when(\FF\Attachment\Pic\Repositories\PicCreator::class)
             ->needs('$picClassName')
             ->give(\FF\Attachment\Pic\Repositories\Pic::class);
+    }
+
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \FF\Attachment\Console\PicClear::class,
+                \FF\Attachment\Console\PicClearUnmatched::class,
+            ]);
+        }
     }
 }
