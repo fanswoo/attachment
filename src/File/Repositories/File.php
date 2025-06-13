@@ -167,8 +167,6 @@ class File extends Model implements IFile, Attachment
             if ($storage->exists($filePath)) {
                 if (!$storage->delete($filePath)) {
                     Log::error("File ID {$this->id} forceDelete: Failed to delete file at path: {$filePath} on disk: {$diskName}");
-                } else {
-                    Log::info("File ID {$this->id} forceDelete: Successfully deleted file: {$filePath} from disk: {$diskName}");
                 }
             } else {
                 Log::warning("File ID {$this->id} forceDelete: File not found at path: {$filePath} on disk: {$diskName}");
@@ -186,10 +184,7 @@ class File extends Model implements IFile, Attachment
             // throw $e; // 如果希望錯誤冒泡並可能回滾事務（如果在事務中）
         }
 
-        // 最後，調用 SoftDeletes trait 的 forceDelete 來刪除資料庫記錄
-        Log::info("File ID {$this->id} forceDelete: About to call SoftDeletes::forceDelete()");
         $result = $this->softDeletesForceDelete($options);
-        Log::info("File ID {$this->id} forceDelete: SoftDeletes::forceDelete() result: " . ($result ? 'true' : 'false'));
         return $result;
     }
 

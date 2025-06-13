@@ -105,7 +105,6 @@ class Pic extends Model implements IPic, Attachment
             if (!empty($this->picable_attr)) {
                 $relatedInstance = new $relatedClass();
                 if ($relatedInstance->{$this->picable_attr}()->getRelated()::getScaleSizes()) {
-                    Log::info("Pic ID {$this->id}: Using scale sizes from {$relatedClass}->{$this->picable_attr}->getScaleSizes()");
                     return $relatedInstance->{$this->picable_attr}()->getRelated()::getScaleSizes();
                 }
                 Log::warning("Pic ID {$this->id}: {$relatedClass}->{$this->picable_attr} does not have getScaleSizes method, using default scale sizes.");
@@ -114,7 +113,6 @@ class Pic extends Model implements IPic, Attachment
 
             // 如果沒有 picable_attr，檢查相關類別是否有 getScaleSizes 方法
             if (method_exists($relatedClass, 'getScaleSizes')) {
-                Log::info("Pic ID {$this->id}: Using scale sizes from {$relatedClass}::getScaleSizes()");
                 return $relatedClass::getScaleSizes();
             }
 
@@ -171,9 +169,6 @@ class Pic extends Model implements IPic, Attachment
             if ($storage->exists($originalPath)) {
                 if (!$storage->delete($originalPath)) {
                     Log::error("Pic ID {$this->id} forceDelete: Failed to delete original file at path: {$originalPath} on disk: {$diskName}");
-                    // 可以選擇是否在此處停止並拋出異常，或僅記錄錯誤
-                } else {
-                    Log::info("Pic ID {$this->id} forceDelete: Successfully deleted original file: {$originalPath} from disk: {$diskName}");
                 }
             } else {
                 Log::warning("Pic ID {$this->id} forceDelete: Original file not found at path: {$originalPath} on disk: {$diskName}");
@@ -190,8 +185,6 @@ class Pic extends Model implements IPic, Attachment
                 if ($storage->exists($variantPath)) {
                     if (!$storage->delete($variantPath)) {
                         Log::error("Pic ID {$this->id} forceDelete: Failed to delete variant file at path: {$variantPath} on disk: {$diskName}");
-                    } else {
-                        Log::info("Pic ID {$this->id} forceDelete: Successfully deleted variant file: {$variantPath} from disk: {$diskName}");
                     }
                 } else {
                     Log::warning("Pic ID {$this->id} forceDelete: Variant file not found at path: {$variantPath} on disk: {$diskName}");
@@ -210,10 +203,7 @@ class Pic extends Model implements IPic, Attachment
             // throw $e; // 如果希望錯誤冒泡並可能回滾事務（如果在事務中）
         }
 
-        // 最後，調用 SoftDeletes trait 的 forceDelete 來刪除資料庫記錄
-        Log::info("Pic ID {$this->id} forceDelete: About to call SoftDeletes::forceDelete()");
         $result = $this->softDeletesForceDelete();
-        Log::info("Pic ID {$this->id} forceDelete: SoftDeletes::forceDelete() result: " . ($result ? 'true' : 'false'));
         return $result;
     }
 
