@@ -42,6 +42,7 @@ class FileModifyer implements IFileModifyer
         }
 
         $fullSavePath = $this->pathGetter->getFullPath();
+
         return Storage::disk(
             $uploadDisk ?? config('attachment.upload_disk'),
         )->put($fullSavePath, $file, 'public');
